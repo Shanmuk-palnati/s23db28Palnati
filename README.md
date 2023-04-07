@@ -2,7 +2,7 @@
 
 added readme
 
-remote server link : https://s23wb28palnati.onrender.com/
+remote server link : https://s23db28palnati.onrender.com/
 
 ### class name :
 Student
