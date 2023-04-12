@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  -let results = [{Name:"Shanmuk",SId:"560728",Email:"shanmuk@test.com"},{Name:"Vamshi",SId:"560729",Email:"vamshi@test.com"},{Name:"Narendra",SId:"560823",Email:"narendra@test.com"}]
+  -let results = students
   div.container-fluid 
         div.row
             each item, index in results
