@@ -9,4 +9,6 @@ var router = express.Router();
 
 router.get('/', student_controlers.student_view_all_Page);
 
+router.get('/student/:id', student_controlers.student_detail);
+
 module.exports = router;
