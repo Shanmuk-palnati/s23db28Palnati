@@ -1,0 +1,21 @@
+extends layout
+block content
+    h1= title
+    - let studentId = toShow._id
+    - let studentName = toShow.Name
+    - let studentSId = toShow.SId
+    - let studentEmail = toShow.Email
+    div
+        div.row
+            div(class='costumeAttr mr-3') Student ID is:
+            div #{studentId}
+        div.row
+            div(class='costumeAttr mr-3') Student Name is:
+            div #{studentName}
+        div.row
+            div(class='costumeAttr mr-3') Student SId is:
+            div #{studentSId}
+        div.row
+            div(class='costumeAttr mr-3') Student Email is:
+            div #{studentEmail}
+
