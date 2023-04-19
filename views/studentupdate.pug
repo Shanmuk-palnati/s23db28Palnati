@@ -2,40 +2,43 @@ extends layout
 block content
 
     h1= title
-    - let studentid = toShow._id
-    - let studentName = toShow.Name
-    - let studentId = toShow.SId
-    - let studentEmail = toShow.Email
-    div.row(class='mb-2')
-        div.mr-1 ID is
-        div #{studentid}
-    - let actionid = "/resource/student/" + studentid
-    form(id='StudentForm', action= actionid, method="PUT")
-        div.form-group
-            label.studentAttr(for='name') Student Name
-            input#name(type='text', name='name', value= studentName )
-        div.form-group
-            label.studentAttr(for='sid') Student SId
-            input#sid(type='number', name='eid', value= studentId )
-        div.form-group
-            label.studentAttr(for='email') Student Email
-            input#email(type='text', name='email', value= studentEmail )
-        input(type="submit")
+    if (toShow == null)
+        h2 No instance to update
+    else
+        - let studentid = toShow._id
+        - let studentName = toShow.Name
+        - let studentId = toShow.SId
+        - let studentEmail = toShow.Email
+        div.row(class='mb-2')
+            div.mr-1 ID is
+            div #{studentid}
+        - let actionid = "/resource/student/" + studentid
+        form(id='StudentForm', action= actionid, method="PUT")
+            div.form-group
+                label.studentAttr(for='name' class="form-label") Student Name
+                input#name(type='text', name='name', value= studentName class="form-control")
+            div.form-group
+                label.studentAttr(for='sid' class="form-label") Student SId
+                input#sid(type='number', name='eid', value= studentId class="form-control")
+            div.form-group
+                label.studentAttr(for='email' class="form-label") Student Email
+                input#email(type='text', name='email', value= studentEmail class="form-control")
+            input(type="submit" class="btn btn-primary")
 
-    script.
-        document.forms['StudentForm'].addEventListener('submit', (event) => {
-            event.preventDefault();
-            // TODO do something here to show user that form is being submitted
-            fetch(event.target.action, {
-                method: 'PUT',
-                body: new URLSearchParams(new FormData(event.target)) // event.target is the form
-            }).then((resp) => {
-                return resp.json(); // or resp.text() or whatever the server sends
-            }).then((body) => {
-                alert("Update succeded")
-                // TODO handle body
-            }).catch((error) => {
-                // TODO handle error
-                alert("Update failed " + error )
+        script.
+            document.forms['StudentForm'].addEventListener('submit', (event) => {
+                event.preventDefault();
+                // TODO do something here to show user that form is being submitted
+                fetch(event.target.action, {
+                    method: 'PUT',
+                    body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+                }).then((resp) => {
+                    return resp.json(); // or resp.text() or whatever the server sends
+                }).then((body) => {
+                    alert("Update succeded")
+                    // TODO handle body
+                }).catch((error) => {
+                    // TODO handle error
+                    alert("Update failed " + error )
+                });
             });
-        });
