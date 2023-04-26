@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 require('dotenv').config();
 const connectionString = process.env.MONGO_CON
 var mongoose = require('mongoose');
@@ -17,6 +19,39 @@ var selRouter = require('./routes/selector');
 var resourceRouter = require('./routes/resource');
 
 var app = express();
+
+
+passport.use(new LocalStrategy(function(username, password, done) {
+  Account.findOne({ username: username }, function (err, user) {
+  if (err) { return done(err); }
+  if (!user) {
+    return done(null, false, { message: 'Incorrect username.' });
+  }
+  if (!user.validPassword(password)) {
+    return done(null, false, { message: 'Incorrect password.' });
+  }
+    return done(null, user);
+  });
+}));
+
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// passport config
+// Use the existing connection
+// The Account model
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+  
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,7 +98,7 @@ console.log("Connection to DB succeeded")
 async function recreateDB(){
  // Delete everything
  await Student.deleteMany();
- let instance1 = new Student({Name:"Shanmuk", SId:12345, Email:'test@gmail.com'});
+ let instance1 = new Student({Name:"Shanmuk", SId:10, Email:'test@gmail.com'});
  instance1.save().then((res)=>{
   console.log(res);
   console.log('saved to DB');
@@ -71,7 +106,7 @@ async function recreateDB(){
   console.log('error while saving to db '+err);
  })
 
- let instance2 = new Student({Name:"Vamshi", SId:560729, Email:'vamshi@test.com'});
+ let instance2 = new Student({Name:"Vamshi", SId:11, Email:'vamshi@test.com'});
  instance2.save().then((res)=>{
   console.log(res);
   console.log('saved to DB');
@@ -79,7 +114,7 @@ async function recreateDB(){
   console.log('error while saving to db '+err);
  })
 
- let instance3 = new Student({Name:"Narendra", SId:560823, Email:'narendra@test.com'});
+ let instance3 = new Student({Name:"Narendra", SId:12, Email:'narendra@test.com'});
  instance3.save().then((res)=>{
   console.log(res);
   console.log('saved to DB');
